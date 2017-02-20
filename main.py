@@ -3,7 +3,7 @@
 source code: https://github.com/maliszew/pythoban """
 import sys
 import pygame
-# import game
+import game
 from menuoption import MenuOption
 
 
@@ -62,6 +62,8 @@ def menu():
                     if current_option == 3:
                         print("Pythoban closed. Goodbye!")
                         running = False
+                    elif current_option == 0:
+                        game.run()
             elif event.type == pygame.MOUSEBUTTONUP:
                 for option in options:
                     if option.rect.collidepoint(pygame.mouse.get_pos()):

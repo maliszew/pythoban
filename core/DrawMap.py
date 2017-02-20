@@ -1,0 +1,1 @@
+"""Draws previously loaded map on the screen."""
