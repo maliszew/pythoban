@@ -70,6 +70,8 @@ def menu():
                         if option.text == "EXIT":
                             print("Pythoban closed. Goodbye!")
                             running = False
+                        elif option.text == "NEW GAME":
+                            game.run()
 
         for option in options:
             # todo: prevent option from being hovered when it is selected by mouse, but user is using a keyboard
