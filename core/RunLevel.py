@@ -2,6 +2,7 @@
 
 from core import LoadMaps
 import pygame, copy, random
+from core import SolveMap
 from pygame.locals import *
 
 global FPSCLOCK, DISPLAYSURF, IMAGESDICT, TILEMAPPING, OUTSIDEDECOMAPPING, BASICFONT, PLAYERIMAGES, currentImage
@@ -74,6 +75,8 @@ DOWN = 'down'
 LEFT = 'left'
 RIGHT = 'right'
 
+solution = ""
+
 
 def drawMap(mapObj, gameStateObj, goals):
     """Draws the map to a Surface object, including the player and
@@ -129,7 +132,7 @@ def runLevel(levels, levelNum):
     mapObj = decorateMap(levelObj['mapObj'], levelObj['startState']['player'])
     gameStateObj = copy.deepcopy(levelObj['startState'])
     mapNeedsRedraw = True # set to True to call drawMap()
-    levelSurf = BASICFONT.render('Level %s of %s' % (levelNum + 1, len(levels)), 1, TEXTCOLOR)
+    levelSurf = BASICFONT.render('Level %s of %s. N / B = Next / Back level. C = Cheat and solve it' % (levelNum + 1, len(levels)), 1, TEXTCOLOR)
     levelRect = levelSurf.get_rect()
     levelRect.bottomleft = (20, WINHEIGHT - 35)
     mapWidth = len(mapObj) * TILEWIDTH
@@ -147,6 +150,7 @@ def runLevel(levels, levelNum):
     cameraLeft = False
     cameraRight = False
 
+    solution = "Too hard?"
     running = True
     while running: # main game loop
         # Reset these variables:
@@ -184,6 +188,9 @@ def runLevel(levels, levelNum):
                     return 'next'
                 elif event.key == pygame.K_b:
                     return 'back'
+
+                elif event.key == pygame.K_c:
+                    solution = solveLevel(levelObj['mapObj'])
 
                 elif event.key == pygame.K_ESCAPE:
                     # running = False # Esc key quits.
@@ -247,7 +254,7 @@ def runLevel(levels, levelNum):
         DISPLAYSURF.blit(mapSurf, mapSurfRect)
 
         DISPLAYSURF.blit(levelSurf, levelRect)
-        stepSurf = BASICFONT.render('Steps: %s' % (gameStateObj['stepCounter']), 1, TEXTCOLOR)
+        stepSurf = BASICFONT.render('Steps: %s. %s' % (gameStateObj['stepCounter'], solution), 1, TEXTCOLOR)
         stepRect = stepSurf.get_rect()
         stepRect.bottomleft = (20, WINHEIGHT - 10)
         DISPLAYSURF.blit(stepSurf, stepRect)
@@ -404,3 +411,21 @@ def floodFill(mapObj, x, y, oldCharacter, newCharacter):
         floodFill(mapObj, x, y+1, oldCharacter, newCharacter) # call down
     if y > 0 and mapObj[x][y-1] == oldCharacter:
         floodFill(mapObj, x, y-1, oldCharacter, newCharacter) # call up
+
+def printLevel(level):
+    fixed_level = ""
+    for row in level:
+        for char in row:
+            # print(char, end="")
+            fixed_level += char
+        # print()
+        fixed_level += "\n"
+    return fixed_level
+
+def solveLevel(level):
+    # print("mapa nr", levelNum, "\n", str(levelObj['mapObj']), print(printLevel(levelObj['mapObj'])))
+    level_to_solve = printLevel(level)
+    solved = SolveMap.run(level_to_solve)
+    # print(SolveMap.run(level_to_solve))
+    print(solved)
+    return solved
