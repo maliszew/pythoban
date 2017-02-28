@@ -4,7 +4,7 @@ just another sokoban clone, written in python.
 
 Find more information about it here: http://www.sokobano.de/wiki/index.php?title=Main_Page
 
-## how to run a game
+## how to run the game
 
 open main game folder in console and run main.py file:
 ```
@@ -40,7 +40,7 @@ You will see count of your steps and current level number in the bottom left cor
 
 Firstly make sure that your level file meets the requirements you will find here: http://www.sokobano.de/wiki/index.php?title=Level_format 
 
-If so, put it in the /assets/ folder. Then edit ```MAP_FILE``` value putting full filename (with file extension):
+If so, put it in the /assets/ folder. Then edit ```MAP_FILE``` value on top of ```game.py``` file, putting full maps filename (with file extension):
 
 ```python
 MAPS_FILE = "starPusherLevels.txt"
