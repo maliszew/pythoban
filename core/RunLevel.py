@@ -8,7 +8,7 @@ from pygame.locals import *
 global FPSCLOCK, DISPLAYSURF, IMAGESDICT, TILEMAPPING, OUTSIDEDECOMAPPING, BASICFONT, PLAYERIMAGES, currentImage
 
 FPS = 30 # frames per second to update the screen
-WINWIDTH = 800 # width of the program's window, in pixels
+WINWIDTH = 1200 # width of the program's window, in pixels
 WINHEIGHT = 600 # height in pixels
 HALF_WINWIDTH = int(WINWIDTH / 2)
 HALF_WINHEIGHT = int(WINHEIGHT / 2)
@@ -22,7 +22,7 @@ TILEWIDTH = 50
 TILEHEIGHT = 85
 TILEFLOORHEIGHT = 40
 
-CAM_MOVE_SPEED = 5 # how many pixels per frame the camera moves
+CAM_MOVE_SPEED = 1 # how many pixels per frame the camera moves
 
 # The percentage of outdoor tiles that have additional
 # decoration on them, such as a tree or rock.
@@ -132,9 +132,12 @@ def runLevel(levels, levelNum):
     mapObj = decorateMap(levelObj['mapObj'], levelObj['startState']['player'])
     gameStateObj = copy.deepcopy(levelObj['startState'])
     mapNeedsRedraw = True # set to True to call drawMap()
-    levelSurf = BASICFONT.render('Level %s of %s. N / B = Next / Back level. C = Cheat and solve it' % (levelNum + 1, len(levels)), 1, TEXTCOLOR)
+    levelSurf = BASICFONT.render('Level %s of %s. N / B = Next / Back level. WSAD - move camera.' % (levelNum + 1, len(levels)), 1, TEXTCOLOR)
     levelRect = levelSurf.get_rect()
-    levelRect.bottomleft = (20, WINHEIGHT - 35)
+    levelRect.bottomleft = (20, WINHEIGHT - 60)
+    infoSurf = BASICFONT.render('Too hard? C = Cheat and solve it! ESC = restart current level.', 1, TEXTCOLOR)
+    infoRect = infoSurf.get_rect()
+    infoRect.bottomleft = (20, WINHEIGHT - 35)
     mapWidth = len(mapObj) * TILEWIDTH
     mapHeight = (len(mapObj[0]) - 1) * TILEFLOORHEIGHT + TILEHEIGHT
     MAX_CAM_X_PAN = abs(HALF_WINHEIGHT - int(mapHeight / 2)) + TILEWIDTH
@@ -150,7 +153,7 @@ def runLevel(levels, levelNum):
     cameraLeft = False
     cameraRight = False
 
-    solution = "Too hard?"
+    solution = ""
     running = True
     while running: # main game loop
         # Reset these variables:
@@ -254,6 +257,7 @@ def runLevel(levels, levelNum):
         DISPLAYSURF.blit(mapSurf, mapSurfRect)
 
         DISPLAYSURF.blit(levelSurf, levelRect)
+        DISPLAYSURF.blit(infoSurf, infoRect)
         stepSurf = BASICFONT.render('Steps: %s. %s' % (gameStateObj['stepCounter'], solution), 1, TEXTCOLOR)
         stepRect = stepSurf.get_rect()
         stepRect.bottomleft = (20, WINHEIGHT - 10)

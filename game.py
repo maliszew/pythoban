@@ -3,9 +3,11 @@ import pygame
 from pygame.locals import *
 from core import LoadMaps, RunLevel
 
-RESOLUTION = 720, 480
+MAPS_FILE = "starPusherLevels.txt"
+
+RESOLUTION = 1200, 600
 FPS = 60
-WINWIDTH = 800 # width of the program's window, in pixels
+WINWIDTH = 1200 # width of the program's window, in pixels
 WINHEIGHT = 600 # height in pixels
 
 def run():
@@ -52,7 +54,7 @@ def run():
                     print("Game closed.")
                     running = False
             else:
-                maps = LoadMaps.LoadMaps("starPusherLevels.txt")
+                maps = LoadMaps.LoadMaps(MAPS_FILE)
                 maps.read_file()
                 currentLevelIndex = 0
 
